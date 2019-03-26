@@ -1,0 +1,5 @@
+https://pandas.pydata.org/pandas-docs/version/0.23.4/generated/pandas.DataFrame.to_html.html
+https://docs.python.org/3/library/unittest.html - Address & Name? Address present check? known geocoding result? dataframe html or is this testing pandas?
+iterator/generator over CSV ? https://stackoverflow.com/questions/519633/lazy-method-for-reading-big-file-in-python
+OOP - class WebGeocoder - upload()  download()  geocode()
+CSS - colours, font sizes
