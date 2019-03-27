@@ -19,6 +19,9 @@ class WebGeocoder():
 def index():
     return render_template('index.html')
 
+@app.route('/success_table', methods=['POSTs'])
+def success_table():
+    return render_template('success-table.html')
 
 
 webgeocoder = WebGeocoder()
