@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, send_file, make_response
 from webgeocoder import WebGeocoder
+import werkzeug   # TODO - is this needed?
 
 app = Flask(__name__)
 
@@ -19,6 +20,17 @@ app = Flask(__name__)
 #         pass
 
 
+@app.route('/download')
+def download():
+    """ download csv from dataframe"""
+    print('In download')
+    geocoded_filename = 'geocoded_' + webgeocoder.get_uploaded_filename()
+    print(geocoded_filename)
+    response = make_response(webgeocoder.download_csv_from_dataframe())
+    response.headers['Content-Disposition'] = 'attachment; filename=' + geocoded_filename
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+    # Flask download CSV from pandas dataframe - https://stackoverflow.com/a/38635222
 
 @app.route('/', methods=['GET'])
 def index():
@@ -26,6 +38,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def index_success_table():
+    result_html=''
     try:
         upload_file = request.files['file_name']
     except Exception as exception:
@@ -37,16 +50,16 @@ def index_success_table():
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))
-    # print(webgeocoder.html_from_dataframe())
+    # print(webgeocoder.get_html_from_dataframe())
     try:
         webgeocoder.geocode_dataframe()
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))
     try:
-        result_html = webgeocoder.html_from_dataframe()
+        result_html = webgeocoder.get_html_from_dataframe()
         print(result_html)
-        return render_template('index.html', result_html=result_html)
+        return render_template('index.html', result_html=result_html, btn='download.html')
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))
@@ -66,20 +79,20 @@ def index_success_table():
 #     except Exception as exception:
 #         print(exception)
 #         return render_template('success-table.html', result_html=str(exception))
-#     # print(webgeocoder.html_from_dataframe())
+#     # print(webgeocoder.get_html_from_dataframe())
 #     try:
 #         webgeocoder.geocode_dataframe()
 #     except Exception as exception:
 #         print(exception)
 #         return render_template('success-table.html', result_html=str(exception))
 #     try:
-#         result_html = webgeocoder.html_from_dataframe()
+#         result_html = webgeocoder.get_html_from_dataframe()
 #         print(result_html)
 #         return render_template('success-table.html', result_html=result_html)
 #     except Exception as exception:
 #         print(exception)
 #         return render_template('success-table.html', result_html=str(exception))
-    # print(webgeocoder.html_from_dataframe())
+    # print(webgeocoder.get_html_from_dataframe())
     # print('should have printed result_html')
 
 
