@@ -8,12 +8,14 @@
 <body>
     <div class="container">
         <h1>Super Geocoder</h1>
-        <form action="{{url_for('success_table')}}"  method="POST" enctype="multipart/form-data">
+        <form action="{{url_for('index_success_table')}}"  method="POST" enctype="multipart/form-data">
             <p class="form">Please upload your CSV file. The values containing addresses should be in a column named <em>address</em> or <em>Address</em></p>
             <input type="file" name="file_name" title="Choose file" class="form"/> <button type="submit" class="form">Submit</button>
             <br>
-            <p class="form">Feedback text here if any</p>
+            <div>{{result_html|safe}}</div>
         </form>
     </div>
+
+
 </body>
 </html>

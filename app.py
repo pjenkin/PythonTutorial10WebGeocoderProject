@@ -20,32 +20,65 @@ app = Flask(__name__)
 
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
-@app.route('/success_table', methods=['POST'])
-def success_table():
+@app.route('/', methods=['POST'])
+def index_success_table():
     try:
         upload_file = request.files['file_name']
     except Exception as exception:
-        return render_template('success-table.html', result_html=str(exception))
+        print(exception)
+        return render_template('index.html', result_html=str(exception))
     # webgeocoder.upload(upload_file)
     try:
         webgeocoder.upload_csv(upload_file)
     except Exception as exception:
-        return render_template('success-table.html', result_html=str(exception))
+        print(exception)
+        return render_template('index.html', result_html=str(exception))
     # print(webgeocoder.html_from_dataframe())
     try:
         webgeocoder.geocode_dataframe()
     except Exception as exception:
-        return render_template('success-table.html', result_html=str(exception))
+        print(exception)
+        return render_template('index.html', result_html=str(exception))
     try:
         result_html = webgeocoder.html_from_dataframe()
         print(result_html)
-        return render_template('success-table.html', result_html=result_html)
+        return render_template('index.html', result_html=result_html)
     except Exception as exception:
-        return render_template('success-table.html', result_html=str(exception))
+        print(exception)
+        return render_template('index.html', result_html=str(exception))
+
+
+
+# @app.route('/success_table', methods=['POST'])
+# def success_table():
+#     try:
+#         upload_file = request.files['file_name']
+#     except Exception as exception:
+#         print(exception)
+#         return render_template('success-table.html', result_html=str(exception))
+#     # webgeocoder.upload(upload_file)
+#     try:
+#         webgeocoder.upload_csv(upload_file)
+#     except Exception as exception:
+#         print(exception)
+#         return render_template('success-table.html', result_html=str(exception))
+#     # print(webgeocoder.html_from_dataframe())
+#     try:
+#         webgeocoder.geocode_dataframe()
+#     except Exception as exception:
+#         print(exception)
+#         return render_template('success-table.html', result_html=str(exception))
+#     try:
+#         result_html = webgeocoder.html_from_dataframe()
+#         print(result_html)
+#         return render_template('success-table.html', result_html=result_html)
+#     except Exception as exception:
+#         print(exception)
+#         return render_template('success-table.html', result_html=str(exception))
     # print(webgeocoder.html_from_dataframe())
     # print('should have printed result_html')
 
