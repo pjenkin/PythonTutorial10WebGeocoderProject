@@ -38,7 +38,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def index_success_table():
-    result_html=''
+
     try:
         upload_file = request.files['file_name']
     except Exception as exception:
@@ -50,7 +50,6 @@ def index_success_table():
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))
-    # print(webgeocoder.get_html_from_dataframe())
     try:
         webgeocoder.geocode_dataframe()
     except Exception as exception:
@@ -63,6 +62,34 @@ def index_success_table():
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))
+
+
+
+    # result_html=''
+    # try:
+    #     upload_file = request.files['file_name']
+    # except Exception as exception:
+    #     print(exception)
+    #     return render_template('index.html', result_html=str(exception))
+    # # webgeocoder.upload(upload_file)
+    # try:
+    #     webgeocoder.upload_csv(upload_file)
+    # except Exception as exception:
+    #     print(exception)
+    #     return render_template('index.html', result_html=str(exception))
+    # # print(webgeocoder.get_html_from_dataframe())
+    # try:
+    #     webgeocoder.geocode_dataframe()
+    # except Exception as exception:
+    #     print(exception)
+    #     return render_template('index.html', result_html=str(exception))
+    # try:
+    #     result_html = webgeocoder.get_html_from_dataframe()
+    #     print(result_html)
+    #     return render_template('index.html', result_html=result_html, btn='download.html')
+    # except Exception as exception:
+    #     print(exception)
+    #     return render_template('index.html', result_html=str(exception))
 
 
 
