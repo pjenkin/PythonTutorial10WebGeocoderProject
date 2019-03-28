@@ -1,3 +1,6 @@
+Order of steps:
+
+
 https://pandas.pydata.org/pandas-docs/version/0.23.4/generated/pandas.DataFrame.to_html.html            return self.dataframe.to_html(classes='geocoded')
 https://docs.python.org/3/library/unittest.html - Address & Name? Address present check? known geocoding result? dataframe html or is this testing pandas?
 iterator/generator over CSV ? https://stackoverflow.com/questions/519633/lazy-method-for-reading-big-file-in-python
@@ -53,3 +56,7 @@ def download():
     response.headers['Content-Type'] = 'text/csv'
     return response
     # Flask download CSV from pandas dataframe - https://stackoverflow.com/a/38635222
+
+
+
+NB pandas Dataframe direct from list or dictionary https://pbpython.com/pandas-list-dict.html

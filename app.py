@@ -14,6 +14,7 @@ def download():
     response = make_response(webgeocoder.download_csv_from_dataframe())
     response.headers['Content-Disposition'] = 'attachment; filename=' + geocoded_filename
     response.headers['Content-Type'] = 'text/csv'
+    print(response)
     return response
     # Flask download CSV from pandas dataframe - https://stackoverflow.com/a/38635222
 

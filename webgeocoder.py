@@ -3,7 +3,7 @@ from geopy.geocoders import Nominatim
 
 class WebGeocoder():
 
-    uploaded_file = None        # property/class variable
+    uploaded_file = None        # property/class variable - _io.TextIOWrapper from file input upload
     dataframe = None
 
     def __init__(self):
@@ -61,10 +61,12 @@ class WebGeocoder():
             print('Name of file uploaded: ' + file.filename)
         except AttributeError:
             print('This upload is not of a requests.file type')
+
         if file.filename == '':
             raise Exception('No file uploaded')
-        # I don't know why the try...except in '\download'seems disabled,
+        # I don't know why the try...except in '\download' seems disabled,
         # but this will catch any non-existent filenames uploaded
+
         self.uploaded_file = file
         try:
             dataframe = pandas.read_csv(file)
