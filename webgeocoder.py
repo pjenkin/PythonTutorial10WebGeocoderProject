@@ -8,6 +8,7 @@ class WebGeocoder():
 
     def __init__(self):
         """ constructor for WebGeocoder """
+        pass
 
     def geocode_dataframe(self):
         if not isinstance(self.dataframe, pandas.DataFrame):                # https://stackoverflow.com/a/14809149
@@ -55,15 +56,6 @@ class WebGeocoder():
         print(self.dataframe)
         return
 
-    # def upload(self, file):
-    #     try:
-    #         print('Name of file uploaded: ' + file.filename)
-    #     except AttributeError:
-    #         print('This upload is not of a requests.file type')
-    #     self.uploaded_file = file
-    #     print('Name of file now uploaded: ' + self.uploaded_file.filename)
-    #     return
-
     def upload_csv(self, file):
         try:
             print('Name of file uploaded: ' + file.filename)
@@ -71,7 +63,8 @@ class WebGeocoder():
             print('This upload is not of a requests.file type')
         if file.filename == '':
             raise Exception('No file uploaded')
-        # I don't know why the try...except seems disabled, but this will catch any non-existent filenames uploaded
+        # I don't know why the try...except in '\download'seems disabled,
+        # but this will catch any non-existent filenames uploaded
         self.uploaded_file = file
         try:
             dataframe = pandas.read_csv(file)

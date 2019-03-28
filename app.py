@@ -5,21 +5,6 @@ import werkzeug   # TODO - is this needed?
 app = Flask(__name__)
 
 
-# class WebGeocoder():
-#
-#     def __init__(self):
-#         """ constructor for WebGeocoder """
-#         if __name__ == '__main__':
-#             app.run(debug=True)
-#             ''' if this app were run by name, eg, to do SQLAlchemy model instantiation,
-#              then __main__ would not be the instance name '''
-#
-#     def upload(self, file):
-#         # flash(file.filename)
-#         print(file.filename)
-#         pass
-
-
 @app.route('/download')
 def download():
     """ download csv from dataframe"""
@@ -58,70 +43,12 @@ def index_success_table():
     try:
         result_html = webgeocoder.get_html_from_dataframe()
         print(result_html)
-        return render_template('index.html', result_html=result_html, btn='download.html')
+        return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))
-
-
-
-    # result_html=''
-    # try:
-    #     upload_file = request.files['file_name']
-    # except Exception as exception:
-    #     print(exception)
-    #     return render_template('index.html', result_html=str(exception))
-    # # webgeocoder.upload(upload_file)
-    # try:
-    #     webgeocoder.upload_csv(upload_file)
-    # except Exception as exception:
-    #     print(exception)
-    #     return render_template('index.html', result_html=str(exception))
-    # # print(webgeocoder.get_html_from_dataframe())
-    # try:
-    #     webgeocoder.geocode_dataframe()
-    # except Exception as exception:
-    #     print(exception)
-    #     return render_template('index.html', result_html=str(exception))
-    # try:
-    #     result_html = webgeocoder.get_html_from_dataframe()
-    #     print(result_html)
-    #     return render_template('index.html', result_html=result_html, btn='download.html')
-    # except Exception as exception:
-    #     print(exception)
-    #     return render_template('index.html', result_html=str(exception))
-
-
-
-# @app.route('/success_table', methods=['POST'])
-# def success_table():
-#     try:
-#         upload_file = request.files['file_name']
-#     except Exception as exception:
-#         print(exception)
-#         return render_template('success-table.html', result_html=str(exception))
-#     # webgeocoder.upload(upload_file)
-#     try:
-#         webgeocoder.upload_csv(upload_file)
-#     except Exception as exception:
-#         print(exception)
-#         return render_template('success-table.html', result_html=str(exception))
-#     # print(webgeocoder.get_html_from_dataframe())
-#     try:
-#         webgeocoder.geocode_dataframe()
-#     except Exception as exception:
-#         print(exception)
-#         return render_template('success-table.html', result_html=str(exception))
-#     try:
-#         result_html = webgeocoder.get_html_from_dataframe()
-#         print(result_html)
-#         return render_template('success-table.html', result_html=result_html)
-#     except Exception as exception:
-#         print(exception)
-#         return render_template('success-table.html', result_html=str(exception))
-    # print(webgeocoder.get_html_from_dataframe())
-    # print('should have printed result_html')
-
+    # return statements do not seem to be return'ing out of function, in this sequence of try...except
+    # - catch/raise errors elsewhere eg in WebGeocoder
 
 
 

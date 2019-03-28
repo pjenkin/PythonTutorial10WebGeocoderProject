@@ -1,5 +1,55 @@
-https://pandas.pydata.org/pandas-docs/version/0.23.4/generated/pandas.DataFrame.to_html.html
+https://pandas.pydata.org/pandas-docs/version/0.23.4/generated/pandas.DataFrame.to_html.html            return self.dataframe.to_html(classes='geocoded')
 https://docs.python.org/3/library/unittest.html - Address & Name? Address present check? known geocoding result? dataframe html or is this testing pandas?
 iterator/generator over CSV ? https://stackoverflow.com/questions/519633/lazy-method-for-reading-big-file-in-python
 OOP - class WebGeocoder - upload()  download()  geocode()
 CSS - colours, font sizes
+name of CSS file - https://stackoverflow.com/questions/4831660/default-css-filename https://www.lifewire.com/naming-css-style-sheet-files-3466881 - no definite convention - sometimes complex/large apps will have separate layout.css (for position) design.css (for colour, size &c), and maybe my_subpage.css eg for separate pages
+https://html.com/tags/doctype/  start with <!DOCTYPE html>
+Color Picker  http://www.iconico.com/colorpic/gettingStarted.aspx  - but only about 10 colour picks for free 
+
+
+TODO: shift first commits to develop branch
+
+(1) app = Flask(__name__); - had to be declared outside class; (2) Flask @app.route def-s for render_template cannot be declared as methods of a class: must be outside class; (3) app = Flask(__name__) at top and if __name__ == '__main__':    app.run(debug=True) at bottom
+WebGeocoder class put into separate file webgeocoder.py and imported - upload(file) method checked simply by printing filename in console. Could test this.
+
+TODO Flask testing - https://pythonhosted.org/Flask-Testing/ - 
+
+
+
+
+
+isinstance - to test whether variable has been set yet to a Pandas Dataframe
+self.dataframe.columns = map(str.lower, self.dataframe.columns)          # series/column names to lower case https://stackoverflow.com/a/36362607
+
+    def geocode_dataframe(self):
+        if not isinstance(self.dataframe, pandas.DataFrame):                # https://stackoverflow.com/a/14809149
+            raise Exception('Dataframe not yet initialised: import CSV to proceed')
+        if not 'address' in self.dataframe.columns and not 'Address' in self.dataframe.columns:
+            raise Exception('No Address or address column in CSV')
+        self.dataframe.columns = map(str.lower, self.dataframe.columns)
+        # series/column names to lower case https://stackoverflow.com/a/36362607
+
+        nom = Nominatim()
+        self.dataframe['Latitude'], self.dataframe['Longitude'] = zip(*self.dataframe['address'].apply(nom.geocode).apply(lambda record: (record.latitude, record.longitude) ))
+        # lambda assignation of lat/lng in geocoded dataframe https://stackoverflow.com/a/31414616
+	# unpacking lat/lng tuple using zip and * https://stackoverflow.com/a/43009150
+
+        self.dataframe.columns = map(str.title, self.dataframe.columns)
+        # set to initial - really should restore to whatever previously
+
+TODO https://stackoverflow.com/questions/50284753/warning-message-while-running-flask/50285851  Environment:production   & .env file
+
+
+            return self.dataframe.to_csv(index=False)
+
+@app.route('/download')
+def download():
+    print('In download')
+    geocoded_filename = 'geocoded_' + webgeocoder.get_uploaded_filename()
+    print(geocoded_filename)
+    response = make_response(webgeocoder.download_csv_from_dataframe())
+    response.headers['Content-Disposition'] = 'attachment; filename=' + geocoded_filename
+    response.headers['Content-Type'] = 'text/csv'
+    return response
+    # Flask download CSV from pandas dataframe - https://stackoverflow.com/a/38635222

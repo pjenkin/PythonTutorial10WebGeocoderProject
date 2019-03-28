@@ -11,6 +11,7 @@
         <form action="{{url_for('index_success_table')}}"  method="POST" enctype="multipart/form-data">
             <p class="form">Please upload your CSV file. The values containing addresses should be in a column named <em>address</em> or <em>Address</em></p>
             <input type="file" name="file_name" title="Choose file" class="form file"/> <button type="submit" class="form file">Submit</button>
+        <div class="file_name">{{file_name}}</div>
             <br>
             <div>{{result_html|safe}}</div>     <!-- need |safe pipe as incoming would be *otherwise escape'd* HTML string -->
         </form>
