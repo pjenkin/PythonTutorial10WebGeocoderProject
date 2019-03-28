@@ -116,5 +116,29 @@ pip3 freeze > requirements.txt
 
 NB @classmethod    https://www.programiz.com/python-programming/methods/built-in/classmethod
 
+TODO: pickling & scraping
+
+        str_bytes = bytes(csv_string, 'utf-8')
+
+        print('bytes: ' + bytes.decode(str_bytes))
+        # bytes = b'''ID, address, People
+        # 1,44 Mead Crescent Southampton, 4
+        # 2, 67 Trevingey Road, 3
+        # 3, 66 Mount Pleasant Road Camborne,2'''
+
+        # self.app.post('/', data=dict(file_name=file))
+
+        data = {'name':'some name'}
+        data['file_name']=(BytesIO(str_bytes), test_file_name)
+        # https: // stackoverflow.com / a / 35712344
+
+        # self.app.post('/', data=dict(file_name=file), content_type='multipart/form-data')
+        self.app.post('/', data=data, content_type='multipart/form-data')
+        # POST to index, using 'frankenstein file'   http://flask.pocoo.org/docs/0.12/testing/
+
+
+        downloaded_file = self.app.get('/download')
+
+DeprecationWarning: Using Nominatim with the default "geopy/1.19.0" `user_agent` is strongly discouraged, as it violates Nominatim's ToS https://operations.osmfoundation.org/policies/nominatim/ and may possibly cause 403 and 429 HTTP errors. Please specify a custom `user_agent` with `Nominatim(user_agent="my-application")` or by overriding the default `user_agent`: `geopy.geocoders.options.default_user_agent = "my-application"`. In geopy 2.0 this will become an exception.
 
 

@@ -1,5 +1,6 @@
 import pandas
 from geopy.geocoders import Nominatim
+import geopy
 
 class WebGeocoder():
 
@@ -14,11 +15,14 @@ class WebGeocoder():
         if not isinstance(self.dataframe, pandas.DataFrame):                # https://stackoverflow.com/a/14809149
             raise Exception('Dataframe not yet initialised: import CSV to proceed')
         if 'address' not in self.dataframe.columns and 'Address' not in self.dataframe.columns:
+            print('Look out!')
+            print(self.dataframe)
             raise Exception('No Address or address column in CSV')
         self.dataframe.columns = map(str.lower, self.dataframe.columns)
         # series/column names to lower case - https://stackoverflow.com/a/36362607
 
         nom = Nominatim()
+        geopy.geocoders.options.default_user_agent = "pnj-python-web-geocoder"
         self.dataframe['Latitude'], self.dataframe['Longitude'] = zip(*self.dataframe['address'].apply(nom.geocode).apply(lambda record: (record.latitude, record.longitude) ))
         # lambda assignation of lat/lng in geocoded dataframe - https://stackoverflow.com/a/31414616
         # unpacking lat/lng tuple using zip and * https://stackoverflow.com/a/43009150
