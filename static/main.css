@@ -1,0 +1,62 @@
+
+html, body {
+    height: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    background-color: #026564;
+    overflow: hidden;
+    text-align: center;
+}
+
+.container h1 {
+    color: #a4a3e2;
+    font-size: 40px;
+    margin-top: 60px;
+    font-family: Verdana, sans-serif;
+}
+
+p.form {
+    font-size: 20px;
+    font-family: Verdana, sans-serif;
+}
+
+input.form {
+    font-size: 20px;
+    font-family: Verdana, sans-serif;
+}
+
+button.form {
+    font-size: 20px;
+    font-family: Verdana, sans-serif;
+}
+
+.geocoded {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.file_name {
+   font-size: 20px;
+   font-family: Verdana, sans-serif;
+}
+
+.menu {
+   font-size: 20px;
+   font-style: bold;
+   font-family: Verdana, sans-serif;
+}
+
+
+
+.headercontainer {
+    margin: 0 auto;
+    width: 100%;
+    background-color: #026564;
+    overflow: hidden;
+    text-align: center;
+}
+
