@@ -70,3 +70,32 @@ TODO: packages - developing https://www.pythoncentral.io/how-to-create-a-python-
 
 heroku 10-148 et seq
 requirements.txt Profile runtime.txt
+
+C:\Users\peter.DESKTOP-3GCVT7E\source\repos\Python\python mega course\10WebGeocoderProject>git add runtime.txt
+
+C:\Users\peter.DESKTOP-3GCVT7E\source\repos\Python\python mega course\10WebGeocoderProject>git add requirements.txt
+
+C:\Users\peter.DESKTOP-3GCVT7E\source\repos\Python\python mega course\10WebGeocoderProject>git add Procfile
+
+C:\Users\peter.DESKTOP-3GCVT7E\source\repos\Python\python mega course\10WebGeocoderProject>git commit -am "22-241 Prep for Heroku push"
+[master 1cbe4c2] 22-241 Prep for Heroku push
+ 4 files changed, 102 insertions(+), 3 deletions(-)
+ create mode 100644 Procfile
+ create mode 100644 requirements.txt
+ create mode 100644 runtime.txt
+
+C:\Users\peter.DESKTOP-3GCVT7E\source\repos\Python\python mega course\10WebGeocoderProject>heroku git:remote --app pnj-python-web-geocoder
+ »   Warning: heroku update available from 7.18.9 to 7.20.1
+set git remote heroku to https://git.heroku.com/pnj-python-web-geocoder.git
+
+C:\Users\peter.DESKTOP-3GCVT7E\source\repos\Python\python mega course\10WebGeocoderProject>git push heroku
+Enumerating objects: 79, done.
+Counting objects: 100% (79/79), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (71/71), done.
+Writing objects: 100% (79/79), 857.64 KiB | 8.75 MiB/s, done.
+Total 79 (delta 36), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+..... and so on (forgot to 'git push heroku' from venv, so lots of unecessary global packages (compressed to 178Mb?) went onto Heroku - oops )
