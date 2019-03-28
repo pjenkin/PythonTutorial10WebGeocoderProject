@@ -20,7 +20,7 @@ TODO Flask testing - https://pythonhosted.org/Flask-Testing/ -
 
 
 
-
+{{myvar|safe}}  - |safe flag if jinja 2'ing HTML string into page (HTML escaped otherwise)
 
 isinstance - to test whether variable has been set yet to a Pandas Dataframe
 self.dataframe.columns = map(str.lower, self.dataframe.columns)          # series/column names to lower case https://stackoverflow.com/a/36362607
@@ -45,7 +45,7 @@ TODO https://stackoverflow.com/questions/50284753/warning-message-while-running-
 
 
             return self.dataframe.to_csv(index=False)
-
+  
 @app.route('/download')
 def download():
     print('In download')
@@ -57,6 +57,16 @@ def download():
     return response
     # Flask download CSV from pandas dataframe - https://stackoverflow.com/a/38635222
 
-
+28/3/19
 
 NB pandas Dataframe direct from list or dictionary https://pbpython.com/pandas-list-dict.html
+
+child templates 10-145 
+
+pip3 install gunicorn
+
+TODO: packages - developing https://www.pythoncentral.io/how-to-create-a-python-package/   -   https://python-packaging.readthedocs.io/en/latest/
+
+
+heroku 10-148 et seq
+requirements.txt Profile runtime.txt
