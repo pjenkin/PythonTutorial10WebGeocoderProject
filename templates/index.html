@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Super Geocoder</title>
-    <link rel="stylesheet" href="../static/main.css">
-</head>
-<body>
+{% extends "layout.html" %}
+<!-- <!DOCTYPE html> -->
+<!--<html>-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Super Geocoder</title>-->
+    <!--<link rel="stylesheet" href="../static/main.css">-->
+<!--</head>-->
+<!--<body>-->
+
+{% block content %}
+
     <div class="container">
         <h1>Super Geocoder</h1>
         <form action="{{url_for('index_success_table')}}"  method="POST" enctype="multipart/form-data">
@@ -17,7 +21,7 @@
         </form>
         {% include btn ignore missing %}
     </div>
+{% endblock %}
 
-
-</body>
-</html>
+<!--</body>-->
+<!--</html>-->
