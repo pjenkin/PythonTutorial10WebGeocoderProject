@@ -98,4 +98,4 @@ Total 79 (delta 36), reused 0 (delta 0)
 remote: Compressing source files... done.
 remote: Building source:
 remote:
-..... and so on (forgot to 'git push heroku' from venv, so lots of unecessary global packages (compressed to 178Mb?) went onto Heroku - oops )
+..... and so on (forgot to 'git feeze > requirements' from venv, from ordinary prompt instead, so lots of unecessary global packages (compressed to 178Mb?) went onto Heroku - oops )
