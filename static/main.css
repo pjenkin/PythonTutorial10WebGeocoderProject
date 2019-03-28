@@ -60,3 +60,20 @@ button.form {
     text-align: center;
 }
 
+.menu {
+  float: center;
+  margin-top: 8px;
+}
+
+.menu li {
+  display: inline;
+}
+
+.menu li + li {
+  margin-left: 35px;
+}
+
+.menu li a {
+  color: #444;
+  text-decoration: none;
+}

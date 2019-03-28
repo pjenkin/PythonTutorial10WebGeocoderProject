@@ -61,7 +61,7 @@ def download():
 
 NB pandas Dataframe direct from list or dictionary https://pbpython.com/pandas-list-dict.html
 
-child templates 10-145 
+child templates 10-145 - trouble getting flask child/parent blocks to display - layout.html in which to house index, map, graph &c - render child('index.html') (extends layout) not parent 
 
 pip3 install gunicorn
 
@@ -98,4 +98,23 @@ Total 79 (delta 36), reused 0 (delta 0)
 remote: Compressing source files... done.
 remote: Building source:
 remote:
-..... and so on (forgot to 'git feeze > requirements' from venv, from ordinary prompt instead, so lots of unecessary global packages (compressed to 178Mb?) went onto Heroku - oops )
+..... and so on (forgot to 'git feeze > requirements' from venv, from ordinary prompt instead, so lots of unecessary global packages (compressed to 178Mb?) went onto Heroku - oops - git push'ing a corrected requirements.txt led to Heroku uninstalling surplus pakages)
+
+https://pnj-python-web-geocoder.herokuapp.com/
+
+python -m unittest discover   - need to have 'test' at start of filename by default e.g. test_webgeocoder.py - python -m unittest test_webgeocoder      if not discovered
+
+Output if Pyunit test(s) passing:
+Ran 1 test in 0.005s
+OK
+
+
+for Flask testing:    https://urllib3.readthedocs.io/en/latest/    https://pythonhosted.org/Flask-Testing/  https://damyanon.net/post/flask-series-testing/
+pip3 install urllib3
+pip3 freeze > requirements.txt
+... uninstalled urllib3 & flask_testing and ran pip3 freeze > requirements.txt    again
+
+NB @classmethod    https://www.programiz.com/python-programming/methods/built-in/classmethod
+
+
+

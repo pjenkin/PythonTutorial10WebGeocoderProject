@@ -18,6 +18,10 @@ def download():
     return response
     # Flask download CSV from pandas dataframe - https://stackoverflow.com/a/38635222
 
+@app.route('/graph')
+def graph():
+    return render_template('graph.html')
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
@@ -51,7 +55,9 @@ def index_success_table():
     # return statements do not seem to be return'ing out of function, in this sequence of try...except
     # - catch/raise errors elsewhere eg in WebGeocoder
 
-
+@app.route('/map')
+def map():
+    return render_template('map.html')
 
     # TODO: find out correct exception types in each case and add a catch accordingly
 
