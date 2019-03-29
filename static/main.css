@@ -1,6 +1,7 @@
 
 html, body {
     height: 100%;
+    background-color: #026564;
 }
 
 .container {
@@ -51,8 +52,8 @@ button.form {
 }
 
 .mapcontainer {
-    width: 600px;
     height: 600px;
+    width: 800px;
     z-index: 1000;
     background-color: transparent;
 }
