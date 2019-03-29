@@ -83,3 +83,10 @@ button.form {
   color: #444;
   text-decoration: none;
 }
+
+.footer {
+    position: fixed;
+    background-color: transparent;
+    bottom: 0;
+    font-family: Verdana, sans-serif;
+}
