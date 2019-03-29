@@ -50,7 +50,10 @@ button.form {
    font-family: Verdana, sans-serif;
 }
 
-
+.mapcontainer {
+    width: 500px;
+    height: 500px;
+}
 
 .headercontainer {
     margin: 0 auto;

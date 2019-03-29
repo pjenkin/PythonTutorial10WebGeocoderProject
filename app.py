@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, send_file, make_response
 from webgeocoder import WebGeocoder
-import werkzeug   # TODO - is this needed?
+import werkzeug   # TODO - is this needed for safe strings in filenames?
+import folium
+
 
 app = Flask(__name__)
 
@@ -57,7 +59,12 @@ def index_success_table():
 
 @app.route('/map')
 def map():
-    return render_template('map.html')
+    map = folium.Map(location=[51, -4], zoom_start=7, tiles='Mapbox Bright')
+    map_html = map._repr_html_()
+    # render map HTML - https://github.com/python-visualization/folium/issues/781#issuecomment-347907408
+    print('rendering map?')
+    print(map_html)
+    return render_template('map.html', map_html=map_html)
 
     # TODO: find out correct exception types in each case and add a catch accordingly
 
