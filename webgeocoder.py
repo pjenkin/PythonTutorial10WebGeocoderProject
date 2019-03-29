@@ -1,15 +1,49 @@
 import pandas
+from geopy import distance
 from geopy.geocoders import Nominatim
 import geopy
+import numpy as np
+np.set_printoptions(threshold=np.inf)       # print out all of numpy array
 
 class WebGeocoder():
 
     uploaded_file = None        # property/class variable - _io.TextIOWrapper from file input upload
     dataframe = None
+    reference_address = None
 
     def __init__(self):
         """ constructor for WebGeocoder """
         pass
+
+    def calculate_distance_from_reference_location(self, address):
+        try:
+            print('in calculate_distance_from_reference_location')
+            self.set_reference_address(address)
+            reference_latitude, reference_longitude = self.get_reference_address_location()    # tuple of lat,lng
+            self.dataframe['reference_latitude'] = reference_latitude
+            self.dataframe['reference_longitude'] = reference_longitude
+            # NB pandas won't allow assignation of tuples to columns  https://stackoverflow.com/a/34811984
+
+            self.dataframe['reference_distance'] = ''
+            # dataframe.iterrows wasn't effecting a new column where needed
+
+            # awkward using tuples with a dataframe - iterating for the mo - could do this maybe with a lambda function
+            for index, row in self.dataframe.iterrows():       # https://stackoverflow.com/a/16476974
+                reference_location = (row['reference_latitude'], row['reference_longitude'])
+                target_location = (row['latitude'], row['longitude'])
+                reference_distance = distance.distance(reference_location, target_location).kilometers
+                print(reference_distance)
+                self.dataframe.loc[index, 'reference_distance'] = reference_distance
+                # index and loc within iterrows loop https://stackoverflow.com/a/25478896
+
+            with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+                print(self.dataframe)       # https://stackoverflow.com/a/30691921
+
+            print('added reference_distance data')
+        except Exception as exception:
+            print(exception)
+        # do this for each row
+        # maybe take address as argument
 
     def geocode_dataframe(self):
         if not isinstance(self.dataframe, pandas.DataFrame):                # https://stackoverflow.com/a/14809149
@@ -40,6 +74,7 @@ class WebGeocoder():
     def get_dataframe(self):
         return self.dataframe
 
+
     def get_html_from_dataframe(self):
         try:
             return self.dataframe.to_html(classes='geocoded')
@@ -47,6 +82,16 @@ class WebGeocoder():
             print(str(exception))
             return exception
 
+    def get_reference_address(self):
+        return self.reference_address
+
+    def get_reference_address_location(self):
+        from geopy.geocoders import Nominatim as nom        # https://geopy.readthedocs.io/en/stable/
+        geolocator = nom(user_agent='pnj-python-web-geocoder')
+        address, (latitude, longitude) = geolocator.geocode(self.get_reference_address())
+        return (latitude, longitude)                     # return just the lat & lng, in a tuple
+
+        # i.e. coordinates
     def get_uploaded_file(self):
         return self.uploaded_file
 
@@ -62,6 +107,9 @@ class WebGeocoder():
         self.dataframe = pandas.read_csv(file)
         print(self.dataframe)
         return
+
+    def set_reference_address(self, address):
+        self.reference_address = address
 
     def upload_csv(self, file):
         try:

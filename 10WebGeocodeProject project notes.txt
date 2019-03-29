@@ -150,3 +150,11 @@ Folium map
 Folium map tile types: https://deparkes.co.uk/2016/06/10/folium-map-tiles/
             atlas = folium.Map(location=[51, -4], zoom_start=7, tiles='mapquestopen', attr='http://open.mapquest.co.uk/')   - NB attr/attribution of tile source
             # tiles attribution - https://stackoverflow.com/a/52172546
+
+renamed 'map' variable to 'atlas' (and to atlas.html) as confusion with standard map function and map route function was occurring.
+
+Need to do stuff such as try to check/keep using dataframe if user navigated away from & back to home page - stick to MVP, basic map working, so get basic Bokeh chart working too.
+
+Bokeh 17 et seq and 20-227
+TODO: figure out apply and map (and lambda functions)
+

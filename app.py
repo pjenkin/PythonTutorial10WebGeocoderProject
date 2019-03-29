@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, send_file, make_response
 from webgeocoder import WebGeocoder
 import werkzeug   # TODO - is this needed for safe strings in filenames?
-import folium
-import pandas
 
 
 app = Flask(__name__)
 
 @app.route('/atlas')
 def atlas():
+    import folium
+    import pandas
 
     # I have not written the code in an MVC way here
     map_html = ''
@@ -79,7 +79,58 @@ def download():
 
 @app.route('/graph')
 def graph():
-    return render_template('graph.html')
+    import pandas
+    from bokeh.plotting import figure, show, output_file
+    from bokeh.models.annotations import Title
+
+
+    # I have not written the code in an MVC way here - mostly Model code below
+
+    error_html = ''
+
+    dataframe = webgeocoder.get_dataframe()
+    if isinstance(dataframe, pandas.DataFrame):  # https://stackoverflow.com/a/14809149
+        dataframe.columns = map(str.lower, dataframe.columns)
+    else:
+        error_html = '<p>Sorry, no uploaded data to chart yet. (Try uploading a CSV file with addresses.)</p>'
+
+    if error_html == '':
+        if 'latitude' not in dataframe.columns or 'longitude' not in dataframe.columns:
+            error_html = '<p>Sorry, no geographical data to map yet. (Try uploading a CSV file with addresses.)</p>'
+        elif 'name' not in dataframe.columns:
+            error_html = '<p>Sorry, in the data there is no column called <em>Name</em> or <em>name</em> - we need this column in the CSV please.</p>'
+            # wade through & respond problems 1 at a time - TODO notify of all missing fields at once
+        elif 'employees' not in dataframe.columns:
+            error_html = '<p>Sorry, in the data there is no column called <em>Employees</em> or <em>employees</em> - we need this column in the CSV please.</p>'
+        else:
+            error_html = 'going to try to build a chart'
+            webgeocoder.calculate_distance_from_reference_location('San Francisco, CA, USA')
+            # find the coordinates for centre of San Francisco
+            # for each row in dataframe, use lat/lng to calculate distance from SF centre
+            # add/populate a column with distance
+
+            fig = figure(width=500, height=500, sizing_mode='stretch_both')
+            dataframe = webgeocoder.get_dataframe()
+            dataframe.columns = map(str.lower, dataframe.columns)
+            fig.scatter(x=dataframe['reference_distance'], y=dataframe['employees'], size=25)
+            # instantiate a x/y/scatter plot
+            # make the distance x axis, make the number of employees y axis
+
+
+
+
+            fig.title.text = 'Distance from central San Francisco vs number of employees'
+            fig.grid.grid_line_alpha = 0.2
+            fig.xaxis.axis_label = 'Distance from central San Francisco (km)'
+            fig.yaxis.axis_label = 'Number of employees'
+
+            # test output/show
+            output_file('CSV-scatter.html')
+            show(fig)
+            # do the doings with getting on the page
+
+
+    return render_template('graph.html', error_html=error_html)
 
 @app.route('/', methods=['GET'])
 def index():
