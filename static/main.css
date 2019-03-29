@@ -85,8 +85,10 @@ button.form {
 }
 
 .footer {
-    position: fixed;
-    background-color: transparent;
     bottom: 0;
+    right: 0;
+    text-align: right;
+    position: absolute;
+    background-color: transparent;
     font-family: Verdana, sans-serif;
 }
