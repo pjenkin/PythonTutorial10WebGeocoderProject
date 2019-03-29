@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, send_file, make_response
 from webgeocoder import WebGeocoder
 import werkzeug   # TODO - is this needed for safe strings in filenames?
-
+# from flask import session
+# from flask_socketio import SocketIO, emit
+# from flask.ext.login import current_user, logout_user
 
 app = Flask(__name__)
 
@@ -142,15 +144,15 @@ def graph():
 
 @app.route('/', methods=['GET'])
 def index():
-    import pandas
-    if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
-        try:
-            result_html = webgeocoder.get_html_from_dataframe()
-            print(result_html)
-            return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
-        except Exception as exception:
-            print(exception)
-            return render_template('index.html', result_html=str(exception))
+    # import pandas
+    # if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
+    #     try:
+    #         result_html = webgeocoder.get_html_from_dataframe()
+    #         print(result_html)
+    #         return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
+    #     except Exception as exception:
+    #         print(exception)
+    #         return render_template('index.html', result_html=str(exception))
     return render_template('index.html')
     # TODO - after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
 
@@ -194,3 +196,9 @@ if __name__ == '__main__':
     ''' if this app were run by name, eg, to do SQLAlchemy model instantiation,
      then __main__ would not be the instance name '''
 
+
+# @SocketIO.on('disconnect')
+# def disconnect_user():
+#     webgeocoder.dataframe = None
+#     print('DISCONNECTED')
+    # try to avoid uploaded file data persisting over sessions

@@ -228,3 +228,12 @@ added to end of /graph route:-
                            div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
 
 puzzling - couldn't see chart and made some edits on master to try to diagnose - then using F12 turned out chart has been there (all along probably) in div with class="bk-canvas events"   
+
+css styling got chart visible eventually
+
+
+edited / home route to check whether dataframe populated but showing up after window closed & reopened
+(also showing reference_distance and other unwanted data - make temporary?)
+https://stackoverflow.com/questions/37227780/flask-session-persisting-after-close-browser
+
+pip3 install flask_socketio
