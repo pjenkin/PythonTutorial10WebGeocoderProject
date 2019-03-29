@@ -142,12 +142,20 @@ def graph():
 
 @app.route('/', methods=['GET'])
 def index():
+    import pandas
+    if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
+        try:
+            result_html = webgeocoder.get_html_from_dataframe()
+            print(result_html)
+            return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
+        except Exception as exception:
+            print(exception)
+            return render_template('index.html', result_html=str(exception))
     return render_template('index.html')
     # TODO - after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
 
 @app.route('/', methods=['POST'])
 def index_success_table():
-
     try:
         upload_file = request.files['file_name']
     except Exception as exception:
