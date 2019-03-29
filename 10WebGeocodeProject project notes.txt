@@ -227,3 +227,4 @@ added to end of /graph route:-
     return render_template('graph.html', error_html=error_html, script1=script1,
                            div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
 
+puzzling - couldn't see chart and made some edits on master to try to diagnose - then using F12 turned out chart has been there (all along probably) in div with class="bk-canvas events"   

@@ -53,6 +53,8 @@ button.form {
 .mapcontainer {
     width: 600px;
     height: 600px;
+    z-index: 1000;
+    background-color: transparent;
 }
 
 .headercontainer {
