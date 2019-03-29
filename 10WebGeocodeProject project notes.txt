@@ -143,4 +143,10 @@ DeprecationWarning: Using Nominatim with the default "geopy/1.19.0" `user_agent`
 
 29/3/18
 
+Folium map
+    # ._repr_html_()  to render map HTML in iframe   -  .get_root().render() to render whole page in HTML     
+    # - https://github.com/python-visualization/folium/issues/781#issuecomment-347907408
 
+Folium map tile types: https://deparkes.co.uk/2016/06/10/folium-map-tiles/
+            atlas = folium.Map(location=[51, -4], zoom_start=7, tiles='mapquestopen', attr='http://open.mapquest.co.uk/')   - NB attr/attribution of tile source
+            # tiles attribution - https://stackoverflow.com/a/52172546

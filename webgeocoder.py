@@ -37,6 +37,9 @@ class WebGeocoder():
             print(exception)
             return exception
 
+    def get_dataframe(self):
+        return self.dataframe
+
     def get_html_from_dataframe(self):
         try:
             return self.dataframe.to_html(classes='geocoded')

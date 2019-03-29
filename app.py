@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file, make_response
 from webgeocoder import WebGeocoder
 import werkzeug   # TODO - is this needed for safe strings in filenames?
 import folium
+import pandas
 
 
 app = Flask(__name__)
@@ -27,6 +28,7 @@ def graph():
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+    # TODO - after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
 
 @app.route('/', methods=['POST'])
 def index_success_table():
@@ -57,14 +59,60 @@ def index_success_table():
     # return statements do not seem to be return'ing out of function, in this sequence of try...except
     # - catch/raise errors elsewhere eg in WebGeocoder
 
-@app.route('/map')
-def map():
-    map = folium.Map(location=[51, -4], zoom_start=7, tiles='Mapbox Bright')
-    map_html = map._repr_html_()
-    # render map HTML - https://github.com/python-visualization/folium/issues/781#issuecomment-347907408
+@app.route('/atlas')
+def atlas():
+
+    map_html = ''
+
+    dataframe = webgeocoder.get_dataframe()
+    if isinstance(dataframe, pandas.DataFrame):  # https://stackoverflow.com/a/14809149
+        dataframe.columns = map(str.lower, dataframe.columns)
+    else:
+        map_html = '<p>Sorry, no geographical data to map yet. (Try uploading a CSV file with addresses.)</p>'
+
+    if map_html == '':
+        if 'latitude' not in dataframe.columns or 'longitude' not in dataframe.columns:
+            map_html = '<p>Sorry, no geographical data to map yet. (Try uploading a CSV file with addresses.)</p>'
+        else:
+            # atlas = folium.Map(location=[51, -4], zoom_start=7, tiles='mapquestopen', attr='http://open.mapquest.co.uk/')
+            atlas = folium.Map(location=[51, -4], zoom_start=7, tiles='openstreetmap', attr='http://wiki.openstreetmap.org/wiki/Tiles')
+            # atlas = folium.Map(location=[51, -4], zoom_start=7, tiles='Mapbox bright')
+            # tiles attribution - https://stackoverflow.com/a/52172546
+
+            csv_feature_group = folium.FeatureGroup('Uploaded CSV Markers')
+            csv_feature_group.add_to(atlas)
+
+            popup_html = """
+            <strong>Name</strong>: %s<br>
+            <strong>Employees</strong>: %s<br>
+            """
+
+
+            # TODO: for every column which isn't lat/lng, record value in a dictionary & use on marker
+            for index, row in dataframe.iterrows():
+                if 'name' in row:
+                    name = row['name']
+                if 'employees' in row:
+                    employees = row['employees']
+                if 'url' in row:
+                    url = row['employees']
+
+                popup_iframe = folium.IFrame(html=popup_html % (name, employees), width=120, height=120)
+                folium.CircleMarker(location=[row['latitude'], row['longitude']], popup=folium.Popup(popup_iframe),
+                                    color='red', radius=6, fill=True, opacity=0.8).add_to(csv_feature_group)
+                # TODO - could adjust radius and colour as per number of employees
+
+                atlas.fit_bounds(csv_feature_group.get_bounds())        # fit map to markers
+
+
+            layer_control = folium.LayerControl().add_to(atlas)
+
+            map_html = atlas._repr_html_()
+            # ._repr_html_()  to render map HTML in iframe   -  .get_root().render() to render whole page in HTML
+            # - https://github.com/python-visualization/folium/issues/781#issuecomment-347907408
     print('rendering map?')
     print(map_html)
-    return render_template('map.html', map_html=map_html)
+    return render_template('atlas.html', map_html=map_html)
 
     # TODO: find out correct exception types in each case and add a catch accordingly
 
