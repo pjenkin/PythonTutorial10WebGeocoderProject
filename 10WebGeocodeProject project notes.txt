@@ -153,8 +153,77 @@ Folium map tile types: https://deparkes.co.uk/2016/06/10/folium-map-tiles/
 
 renamed 'map' variable to 'atlas' (and to atlas.html) as confusion with standard map function and map route function was occurring.
 
-Need to do stuff such as try to check/keep using dataframe if user navigated away from & back to home page - stick to MVP, basic map working, so get basic Bokeh chart working too.
+TODO Need to do stuff such as try to check/keep using dataframe if user navigated away from & back to home page - stick to MVP, basic map working, so get basic Bokeh chart working too.
+
 
 Bokeh 17 et seq and 20-227
 TODO: figure out apply and map (and lambda functions)
+
+added in WebGeocoder:-
+    def calculate_distance_from_reference_location(self, address):
+        try:
+            print('in calculate_distance_from_reference_location')
+            self.set_reference_address(address)
+            reference_latitude, reference_longitude = self.get_reference_address_location()    # tuple of lat,lng
+            self.dataframe['reference_latitude'] = reference_latitude
+            self.dataframe['reference_longitude'] = reference_longitude
+            # NB pandas won't allow assignation of tuples to columns  https://stackoverflow.com/a/34811984
+
+            self.dataframe['reference_distance'] = ''
+            # dataframe.iterrows wasn't effecting a new column where needed
+
+            # awkward using tuples with a dataframe - iterating for the mo - could do this maybe with a lambda function
+            for index, row in self.dataframe.iterrows():       # https://stackoverflow.com/a/16476974
+                reference_location = (row['reference_latitude'], row['reference_longitude'])
+                target_location = (row['latitude'], row['longitude'])
+                reference_distance = distance.distance(reference_location, target_location).kilometers
+                print(reference_distance)
+                self.dataframe.loc[index, 'reference_distance'] = reference_distance
+                # index and loc within iterrows loop https://stackoverflow.com/a/25478896
+
+            with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+                print(self.dataframe)       # https://stackoverflow.com/a/30691921
+
+            print('added reference_distance data')
+        except Exception as exception:
+            print(exception)
+
+
+then as diagnostic checking produced graph, and to adjust, using     output_file('checking-CSV-scatter.html'); show(fig)
+
+To embed graph into page on web (as per 20-227)
+in graph.html :-
+{% extends "layout.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href={{cdn_css|safe}} type="text/css" />
+<script type="text/javascript" src={{cdn_javascript}}|safe></script>
+
+
+<div class="container">
+    <p>Graph to correlate organisation's number of employees and distance from the centre of San Francisco, CA, USA</p>
+    <p>Graph here</p>
+    <p>{{error_html|safe}}</p>
+</div>
+
+{{script1|safe}}
+{{div1|safe}}
+<!--  safe pipe so that code included is not escape'd -->
+
+{% endblock %}
+
+added to start of /graph route:-
+    from bokeh.embed import components
+    from bokeh.resources import CDN
+
+added to end of /graph route:-
+            script1, div1 = components(fig)
+            cdn_javascript = CDN.js_files[0]
+            cdn_css = CDN.css_files[0]
+
+
+    # return render_template('graph.html', error_html=error_html)
+    return render_template('graph.html', error_html=error_html, script1=script1,
+                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
 

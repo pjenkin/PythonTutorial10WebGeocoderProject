@@ -2,9 +2,18 @@
 
 {% block content %}
 
-    <div class="container">
-        <p>Graph to correlate organisation's number of employees and distance from the centre of San Francisco, CA, USA</p>
-        <p>Graph here</p>
-        <p>{{error_html|safe}}</p>
-    </div>
+<link rel="stylesheet" href={{cdn_css|safe}} type="text/css" />
+<script type="text/javascript" src={{cdn_javascript}}|safe></script>
+
+
+<div class="container">
+    <p>Graph to correlate organisation's number of employees and distance from the centre of San Francisco, CA, USA</p>
+    <p>Graph here</p>
+    <p>{{error_html|safe}}</p>
+</div>
+
+{{script1|safe}}
+{{div1|safe}}
+<!--  safe pipe so that code included is not escape'd -->
+
 {% endblock %}

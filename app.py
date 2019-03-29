@@ -82,6 +82,8 @@ def graph():
     import pandas
     from bokeh.plotting import figure, show, output_file
     from bokeh.models.annotations import Title
+    from bokeh.embed import components
+    from bokeh.resources import CDN
 
 
     # I have not written the code in an MVC way here - mostly Model code below
@@ -129,8 +131,14 @@ def graph():
             show(fig)
             # do the doings with getting on the page
 
+            script1, div1 = components(fig)
+            cdn_javascript = CDN.js_files[0]
+            cdn_css = CDN.css_files[0]
 
-    return render_template('graph.html', error_html=error_html)
+
+    # return render_template('graph.html', error_html=error_html)
+    return render_template('graph.html', error_html=error_html, script1=script1,
+                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
 
 @app.route('/', methods=['GET'])
 def index():

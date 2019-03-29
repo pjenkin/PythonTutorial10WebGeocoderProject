@@ -32,7 +32,6 @@ class WebGeocoder():
                 reference_location = (row['reference_latitude'], row['reference_longitude'])
                 target_location = (row['latitude'], row['longitude'])
                 reference_distance = distance.distance(reference_location, target_location).kilometers
-                print(reference_distance)
                 self.dataframe.loc[index, 'reference_distance'] = reference_distance
                 # index and loc within iterrows loop https://stackoverflow.com/a/25478896
 
@@ -42,8 +41,6 @@ class WebGeocoder():
             print('added reference_distance data')
         except Exception as exception:
             print(exception)
-        # do this for each row
-        # maybe take address as argument
 
     def geocode_dataframe(self):
         if not isinstance(self.dataframe, pandas.DataFrame):                # https://stackoverflow.com/a/14809149
