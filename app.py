@@ -222,7 +222,7 @@ def index_success_table():
         return render_template('index.html', result_html=str(exception))
     # return statements do not seem to be return'ing out of function, in this sequence of try...except
     # - catch/raise errors elsewhere eg in WebGeocoder
-
+    # this code not very DRY
 
     # TODO: find out correct exception types in each case and add a catch accordingly
 

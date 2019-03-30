@@ -20,23 +20,18 @@ class WebGeocoder():
             print('in calculate_distance_from_reference_location')
             self.set_reference_address(address)
             reference_latitude, reference_longitude = self.get_reference_address_location()    # tuple of lat,lng
-            self.dataframe['reference_latitude'] = reference_latitude
-            self.dataframe['reference_longitude'] = reference_longitude
+            reference_location = (reference_latitude, reference_longitude)
             # NB pandas won't allow assignation of tuples to columns  https://stackoverflow.com/a/34811984
-
-            self.dataframe['reference_distance'] = ''
-            # dataframe.iterrows wasn't effecting a new column where needed
 
             # awkward using tuples with a dataframe - iterating for the mo - could do this maybe with a lambda function
             for index, row in self.dataframe.iterrows():       # https://stackoverflow.com/a/16476974
-                reference_location = (row['reference_latitude'], row['reference_longitude'])
                 target_location = (row['latitude'], row['longitude'])
                 reference_distance = distance.distance(reference_location, target_location).kilometers
                 self.dataframe.loc[index, 'reference_distance'] = reference_distance
                 # index and loc within iterrows loop https://stackoverflow.com/a/25478896
 
             with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
-                print(self.dataframe)       # https://stackoverflow.com/a/30691921
+                print(self.dataframe)       # diagnostic - print whole dataframe - https://stackoverflow.com/a/30691921
 
             print('added reference_distance data')
         except Exception as exception:

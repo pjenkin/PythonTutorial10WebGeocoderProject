@@ -189,6 +189,10 @@ added in WebGeocoder:-
             print(exception)
 
 
+            with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+                print(self.dataframe)       # diagnostic - print whole dataframe - https://stackoverflow.com/a/30691921
+
+
 then as diagnostic checking produced graph, and to adjust, using     output_file('checking-CSV-scatter.html'); show(fig)
 
 To embed graph into page on web (as per 20-227)
@@ -233,7 +237,7 @@ css styling got chart visible eventually
 
 
 edited / home route to check whether dataframe populated but showing up after window closed & reopened
-(also showing reference_distance and other unwanted data - make temporary?)
+(also showing reference_distance and other unwanted data - make temporary?) (see next day)
 https://stackoverflow.com/questions/37227780/flask-session-persisting-after-close-browser
 
 pip3 install flask_socketio - not used for on 'disconnect' after all - cf Node.js SocketIO ?
