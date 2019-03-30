@@ -109,7 +109,7 @@ def graph():
             error_html = '<p>Sorry, no geographical data to map yet. (Try uploading a CSV file with addresses.)</p>'
         elif 'name' not in dataframe.columns:
             error_html = '<p>Sorry, in the data there is no column called <em>Name</em> or <em>name</em> - we need this column in the CSV please.</p>'
-            # wade through & respond problems 1 at a time - TODO notify of all missing fields at once
+            # wade through & respond to problems 1 at a time - TODO notify of all missing fields at once
         elif 'employees' not in dataframe.columns:
             error_html = '<p>Sorry, in the data there is no column called <em>Employees</em> or <em>employees</em> - we need this column in the CSV please.</p>'
         else:
@@ -202,8 +202,8 @@ def index():
     # return render_template('index.html')
     return render_template('index.html', inline_visibility_flag_property=inline_visibility_flag_property,
                            inline_disability_flag_property=inline_disability_flag_property)
-    # TODO - after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
-    # should only repopulate page if coming from graph or chart pages
+    # Issue: after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
+    # ... should only repopulate page if coming from graph or chart pages
 
 @app.route('/', methods=['POST'])
 def index_success_table():
