@@ -342,6 +342,8 @@ NB problem: graph and atlas (sometimes) showing last data used - workaround by i
               <!-- TODO: CRUD with SQLite -->
           </ul>
 
+NB workaround still will leave a blank home page table area if F5 pressed after data loaded!
+
 
 NB labels applied to Bokeh scatter plot figure
 
