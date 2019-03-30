@@ -12,11 +12,10 @@
             <li><a href="{{url_for('index')}}">Home</a> </li>
             <li><a href="{{url_for('atlas')}}">Map</a> </li>
             <li><a href="{{url_for('graph')}}">Graph</a> </li>
+              <!-- TODO: CRUD with SQLite -->
           </ul>
         </nav></strong>
       </div>
-<p>        {{webgeocoder_dict|safe}}
-</p>
     <div>
     {% block content %}
     {% endblock %}

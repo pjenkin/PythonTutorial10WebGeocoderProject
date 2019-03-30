@@ -116,7 +116,7 @@ pip3 freeze > requirements.txt
 
 NB @classmethod    https://www.programiz.com/python-programming/methods/built-in/classmethod
 
-TODO: pickling & scraping
+TODO: pickling & scraping  - eg pandas.Dataframe().to_pickle() or pickle.dump() - serialised to a file a bit like JSON; other rival formats eg parquet https://pandas.pydata.org/pandas-docs/stable/reference/frame.html#serialization-io-conversion - various filename extensions e.g. .p .pik .pickle https://stackoverflow.com/a/44930921 - NB non IO serialisation e.g. pandas.Dataframe().to_dict()
 
         str_bytes = bytes(csv_string, 'utf-8')
 
@@ -236,4 +236,68 @@ edited / home route to check whether dataframe populated but showing up after wi
 (also showing reference_distance and other unwanted data - make temporary?)
 https://stackoverflow.com/questions/37227780/flask-session-persisting-after-close-browser
 
-pip3 install flask_socketio
+pip3 install flask_socketio - not used for on 'disconnect' after all - cf Node.js SocketIO ?
+
+30/3/19
+
+Problem of either (i) dataframe not persisting when index GET page navigated back to, and/or (ii) if dataframe persisted in GET, data possibly displayed from previous session/user (?) when opening index page anew
+in '/' route (GET):-
+
+    if isinstance(request.referrer, str):
+        referrer_last_part = request.referrer.split('/')[-1]
+    else:
+        referrer_last_part = str(None)
+    print('last part: ' + referrer_last_part)
+
+    if referrer_last_part == 'atlas' or referrer_last_part == 'graph':
+        inline_visibility_flag_tag = 'class="currently-visible"'
+    else:
+        inline_visibility_flag_tag = ''
+
+    if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
+        try:
+            result_html = webgeocoder.get_html_from_dataframe()
+            print(result_html)
+            return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename(), inline_visibility_flag_tag=inline_visibility_flag_tag)
+        except Exception as exception:
+            print(exception)
+            return render_template('index.html', result_html=str(exception))
+
+
+    # return render_template('index.html')
+    return render_template('index.html', inline_visibility_flag_tag=inline_visibility_flag_tag)
+    # TODO - after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
+
+
+also in '/' route (POST):-
+
+        inline_visibility_flag_tag = 'class="currently-visible"'
+        return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename(), inline_visibility_flag_tag=inline_visibility_flag_tag)
+
+
+and in index.html:-
+        <form action="{{url_for('index_success_table')}}"  method="POST" enctype="multipart/form-data">
+            <p class="form">Please upload your CSV file. The values containing addresses should be in a column named <em>address</em> or <em>Address</em></p>
+            <input type="file" name="file_name" title="Choose file" class="form file"/> <button type="submit" class="form file">Submit</button>
+            <div class="normally-invisible"><div {{inline_visibility_flag_tag|safe}}>
+                <div class="file_name">{{file_name}}</div>
+            </div></div>
+            <br>
+            <div class="normally-invisible"><div {{inline_visibility_flag_tag|safe}}>{{result_html|safe}}</div></div>     <!-- need |safe pipe as incoming would be *otherwise escape'd* HTML string -->
+        </form>
+        <div class="normally-invisible"><div {{inline_visibility_flag_tag|safe}}>
+        {% include btn ignore missing %}
+        </div></div>
+
+and in  main.css:-
+.normally-invisible {
+    visibility:hidden;
+}
+
+.currently-visible {
+    visibility:visible;
+}
+
+
+
+

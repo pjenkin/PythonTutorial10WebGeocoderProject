@@ -83,10 +83,10 @@ def download():
 def graph():
     import pandas
     from bokeh.plotting import figure, show, output_file
-    from bokeh.models.annotations import Title
+    # from bokeh.models.annotations import Title
     from bokeh.embed import components
     from bokeh.resources import CDN
-
+    from bokeh.models import ColumnDataSource, LabelSet
 
     # I have not written the code in an MVC way here - mostly Model code below
 
@@ -128,9 +128,20 @@ def graph():
             fig.xaxis.axis_label = 'Distance from central San Francisco (km)'
             fig.yaxis.axis_label = 'Number of employees'
 
-            # test output/show
-            output_file('CSV-scatter.html')
-            show(fig)
+            source = ColumnDataSource(data=dict(reference_distance=webgeocoder.get_dataframe()['reference_distance'],
+                                        employees=webgeocoder.get_dataframe()['employees'],
+                                        name=webgeocoder.get_dataframe()['name']
+                                        ))
+            labels = LabelSet(x='reference_distance', y='employees', text='name', x_offset=0, y_offset=5,
+                              source=source, render_mode='canvas')
+
+            fig.add_layout(labels)
+
+            # could add citation as Label with details to print source of data
+
+            # check output/show
+            # output_file('CSV-scatter.html')
+            # show(fig)
             # do the doings with getting on the page
 
             script1, div1 = components(fig)
@@ -138,25 +149,26 @@ def graph():
             cdn_css = CDN.css_files[0]
 
 
-    webgeocoder_dict = webgeocoder.get_dataframe().to_dict()
+    # webgeocoder_dict = webgeocoder.get_dataframe().to_dict()
 
     # return render_template('graph.html', error_html=error_html)
-    # return render_template('graph.html', error_html=error_html, script1=script1,
-    #                        div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
     return render_template('graph.html', error_html=error_html, script1=script1,
-                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript,
-                           webgeocoder_dict=webgeocoder_dict)
+                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
+    # return render_template('graph.html', error_html=error_html, script1=script1,
+    #                        div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript,
+    #                        webgeocoder_dict=webgeocoder_dict)
 
 @app.route('/', methods=['GET'])
 def index():
     import pandas
 
-    print('request.referrer: ' + str(request.referrer))
+    # avoid (visibly) persisting data if user has just landed on home/root/index page
+    # print('request.referrer: ' + str(request.referrer))
     if isinstance(request.referrer, str):
         referrer_last_part = request.referrer.split('/')[-1]
     else:
         referrer_last_part = str(None)
-    print('last part: ' + referrer_last_part)
+    # print('last part: ' + referrer_last_part)
 
     if referrer_last_part == 'atlas' or referrer_last_part == 'graph':
         inline_visibility_flag_tag = 'class="currently-visible"'
