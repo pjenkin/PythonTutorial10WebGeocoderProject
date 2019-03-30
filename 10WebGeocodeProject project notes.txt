@@ -302,6 +302,25 @@ and in  main.css:-
     visibility:visible;
 }
 
+-also applied to graph.html & route, and atlas.html & route
+
+
+
+
+NB labels applied to Bokeh scatter plot figure
+
+            source = ColumnDataSource(data=dict(reference_distance=webgeocoder.get_dataframe()['reference_distance'],
+                                        employees=webgeocoder.get_dataframe()['employees'],
+                                        name=webgeocoder.get_dataframe()['name']
+                                        ))
+            labels = LabelSet(x='reference_distance', y='employees', text='name', x_offset=0, y_offset=5,
+                              source=source, render_mode='canvas')
+
+            fig.add_layout(labels)
+
+
+
+
 
 
 

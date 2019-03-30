@@ -63,7 +63,13 @@ def atlas():
             # - https://github.com/python-visualization/folium/issues/781#issuecomment-347907408
     print('rendering map?')
     print(map_html)
-    return render_template('atlas.html', map_html=map_html)
+
+    inline_disability_flag_property = 'style="pointer-events:auto;color: #444;font-style:normal;opacity:1;"'
+    # all pages safely navigable once data has been loaded - could use global constant
+
+    # return render_template('atlas.html', map_html=map_html)
+    return render_template('atlas.html', map_html=map_html,
+                           inline_disability_flag_property=inline_disability_flag_property)
 
 
 @app.route('/download')
@@ -151,9 +157,13 @@ def graph():
 
     # webgeocoder_dict = webgeocoder.get_dataframe().to_dict()
 
+    inline_disability_flag_property = 'style="pointer-events:auto;color: #444;font-style:normal;opacity:1;"'
+    # all pages safely navigable once data has been loaded - could use global constant
+
     # return render_template('graph.html', error_html=error_html)
     return render_template('graph.html', error_html=error_html, script1=script1,
-                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
+                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript,
+                           inline_disability_flag_property=inline_disability_flag_property)
     # return render_template('graph.html', error_html=error_html, script1=script1,
     #                        div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript,
     #                        webgeocoder_dict=webgeocoder_dict)
@@ -171,23 +181,32 @@ def index():
     # print('last part: ' + referrer_last_part)
 
     if referrer_last_part == 'atlas' or referrer_last_part == 'graph':
-        inline_visibility_flag_tag = 'class="currently-visible"'
+        # inline_visibility_flag_tag = 'class="currently-visible"'
+        inline_visibility_flag_property = 'style="visibility: visible;"'
+        inline_disability_flag_property = 'style="pointer-events:auto;color: #444;font-style:normal;opacity:1;"'
+        # use inline style to avoid messing up any class definitions
     else:
-        inline_visibility_flag_tag = ''
+        inline_visibility_flag_property = ''
+        inline_disability_flag_property = ''
 
 
     if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
         try:
             result_html = webgeocoder.get_html_from_dataframe()
             print(result_html)
-            return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename(), inline_visibility_flag_tag=inline_visibility_flag_tag)
+            return render_template('index.html', result_html=result_html, btn='download.html',
+                                   file_name=webgeocoder.get_uploaded_filename(),
+                                   inline_visibility_flag_property=inline_visibility_flag_property,
+                                   inline_disability_flag_property=inline_disability_flag_property)
+
         except Exception as exception:
             print(exception)
             return render_template('index.html', result_html=str(exception))
 
 
     # return render_template('index.html')
-    return render_template('index.html', inline_visibility_flag_tag=inline_visibility_flag_tag)
+    return render_template('index.html', inline_visibility_flag_property=inline_visibility_flag_property,
+                           inline_disability_flag_property=inline_disability_flag_property)
     # TODO - after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
     # should only repopulate page if coming from graph or chart pages
 
@@ -215,8 +234,13 @@ def index_success_table():
         result_html = webgeocoder.get_html_from_dataframe()
         print(result_html)
         # return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
-        inline_visibility_flag_tag = 'class="currently-visible"'
-        return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename(), inline_visibility_flag_tag=inline_visibility_flag_tag)
+        inline_visibility_flag_property = 'class="currently-visible"'
+        inline_disability_flag_property = 'style="pointer-events:auto;color: #444;font-style:normal;opacity:1;"'
+        return render_template('index.html', result_html=result_html, btn='download.html',
+                               file_name=webgeocoder.get_uploaded_filename(),
+                               inline_visibility_flag_property=inline_visibility_flag_property,
+                               inline_disability_flag_property=inline_disability_flag_property
+                               )
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))

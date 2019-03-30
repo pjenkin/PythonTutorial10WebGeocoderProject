@@ -99,3 +99,10 @@ button.form {
 .currently-visible {
     visibility:visible;
 }
+
+.normally-deactivated {
+    pointer-events: none;
+    display: inline-block;
+    opacity: 0.5;
+    font-style:oblique;
+}

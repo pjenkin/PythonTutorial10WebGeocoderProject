@@ -10,8 +10,14 @@
         <strong><nav>
           <ul class="menu">
             <li><a href="{{url_for('index')}}">Home</a> </li>
-            <li><a href="{{url_for('atlas')}}">Map</a> </li>
-            <li><a href="{{url_for('graph')}}">Graph</a> </li>
+            <li><a href="{{url_for('atlas')}}" {{inline_disability_flag_property|safe}}
+                   title="Please upload address data to see map"
+                   alt="Please upload address data to see map"
+                   class="normally-deactivated">Map</a> </li>
+            <li><a href="{{url_for('graph')}}" {{inline_disability_flag_property|safe}}
+                   title="Please upload address, name and number of employees data to see map"
+                   alt="Please upload address, name and number of employees data to see map"
+                   class="normally-deactivated">Graph</a> </li>
               <!-- TODO: CRUD with SQLite -->
           </ul>
         </nav></strong>
