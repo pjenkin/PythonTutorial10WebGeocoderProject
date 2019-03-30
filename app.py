@@ -138,26 +138,51 @@ def graph():
             cdn_css = CDN.css_files[0]
 
 
+    webgeocoder_dict = webgeocoder.get_dataframe().to_dict()
+
     # return render_template('graph.html', error_html=error_html)
+    # return render_template('graph.html', error_html=error_html, script1=script1,
+    #                        div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
     return render_template('graph.html', error_html=error_html, script1=script1,
-                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript)
+                           div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript,
+                           webgeocoder_dict=webgeocoder_dict)
 
 @app.route('/', methods=['GET'])
 def index():
-    # import pandas
-    # if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
-    #     try:
-    #         result_html = webgeocoder.get_html_from_dataframe()
-    #         print(result_html)
-    #         return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
-    #     except Exception as exception:
-    #         print(exception)
-    #         return render_template('index.html', result_html=str(exception))
-    return render_template('index.html')
+    import pandas
+
+    print('request.referrer: ' + str(request.referrer))
+    if isinstance(request.referrer, str):
+        referrer_last_part = request.referrer.split('/')[-1]
+    else:
+        referrer_last_part = str(None)
+    print('last part: ' + referrer_last_part)
+
+    if referrer_last_part == 'atlas' or referrer_last_part == 'graph':
+        inline_visibility_flag_tag = 'class="currently-visible"'
+    else:
+        inline_visibility_flag_tag = ''
+
+
+    if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
+        try:
+            result_html = webgeocoder.get_html_from_dataframe()
+            print(result_html)
+            return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename(), inline_visibility_flag_tag=inline_visibility_flag_tag)
+        except Exception as exception:
+            print(exception)
+            return render_template('index.html', result_html=str(exception))
+
+
+    # return render_template('index.html')
+    return render_template('index.html', inline_visibility_flag_tag=inline_visibility_flag_tag)
     # TODO - after navigating away from page, if dataframe populated, no table shown: could check for dataframe on GET
+    # should only repopulate page if coming from graph or chart pages
 
 @app.route('/', methods=['POST'])
 def index_success_table():
+
+
     try:
         upload_file = request.files['file_name']
     except Exception as exception:
@@ -177,7 +202,9 @@ def index_success_table():
     try:
         result_html = webgeocoder.get_html_from_dataframe()
         print(result_html)
-        return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
+        # return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
+        inline_visibility_flag_tag = 'class="currently-visible"'
+        return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename(), inline_visibility_flag_tag=inline_visibility_flag_tag)
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))

@@ -54,7 +54,6 @@ button.form {
 .mapcontainer {
     height: 600px;
     width: 800px;
-    z-index: 1000;
     background-color: transparent;
 }
 
@@ -91,4 +90,12 @@ button.form {
     position: absolute;
     background-color: transparent;
     font-family: Verdana, sans-serif;
+}
+
+.normally-invisible {
+    visibility:hidden;
+}
+
+.currently-visible {
+    visibility:visible;
 }
