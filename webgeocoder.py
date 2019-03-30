@@ -47,7 +47,8 @@ class WebGeocoder():
         self.dataframe.columns = map(str.lower, self.dataframe.columns)
         # series/column names to lower case - https://stackoverflow.com/a/36362607
 
-        nom = Nominatim()
+        nom = Nominatim(user_agent='pnj-python-web-geocoder')
+        # user-agent string as app name as per Nominatim instructions
         geopy.geocoders.options.default_user_agent = "pnj-python-web-geocoder"
         self.dataframe['Latitude'], self.dataframe['Longitude'] = zip(*self.dataframe['address'].apply(nom.geocode).apply(lambda record: (record.latitude, record.longitude) ))
         # lambda assignation of lat/lng in geocoded dataframe - https://stackoverflow.com/a/31414616
