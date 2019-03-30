@@ -302,9 +302,45 @@ and in  main.css:-
     visibility:visible;
 }
 
--also applied to graph.html & route, and atlas.html & route
+
+NB problem: graph and atlas (sometimes) showing last data used - workaround by inserting inline style/css for links for graph and atlas so that initially grey-ed out but thereafter usable 
+
+    inline_disability_flag_property = 'style="pointer-events:auto;color: #444;font-style:normal;opacity:1;"'
+    # all pages safely navigable once data has been loaded - could use global constant
+
+    if referrer_last_part == 'atlas' or referrer_last_part == 'graph':
+        # inline_visibility_flag_tag = 'class="currently-visible"'
+        inline_visibility_flag_property = 'style="visibility: visible;"'
+        inline_disability_flag_property = 'style="pointer-events:auto;color: #444;font-style:normal;opacity:1;"'
+        # use inline style to avoid messing up any class definitions
+    else:
+        inline_visibility_flag_property = ''
+        inline_disability_flag_property = ''
 
 
+    if isinstance(webgeocoder.get_dataframe(), pandas.DataFrame):
+        try:
+            result_html = webgeocoder.get_html_from_dataframe()
+            print(result_html)
+            return render_template('index.html', result_html=result_html, btn='download.html',
+                                   file_name=webgeocoder.get_uploaded_filename(),
+                                   inline_visibility_flag_property=inline_visibility_flag_property,
+                                   inline_disability_flag_property=inline_disability_flag_property)
+
+
+
+          <ul class="menu">
+            <li><a href="{{url_for('index')}}">Home</a> </li>
+            <li><a href="{{url_for('atlas')}}" {{inline_disability_flag_property|safe}}
+                   title="Please upload address data to see map"
+                   alt="Please upload address data to see map"
+                   class="normally-deactivated">Map</a> </li>
+            <li><a href="{{url_for('graph')}}" {{inline_disability_flag_property|safe}}
+                   title="Please upload address, name and number of employees data to see map"
+                   alt="Please upload address, name and number of employees data to see map"
+                   class="normally-deactivated">Graph</a> </li>
+              <!-- TODO: CRUD with SQLite -->
+          </ul>
 
 
 NB labels applied to Bokeh scatter plot figure
