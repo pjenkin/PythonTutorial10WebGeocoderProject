@@ -113,7 +113,7 @@ def graph():
         elif 'employees' not in dataframe.columns:
             error_html = '<p>Sorry, in the data there is no column called <em>Employees</em> or <em>employees</em> - we need this column in the CSV please.</p>'
         else:
-            error_html = 'going to try to build a chart'
+            # error_html = 'going to try to build a chart'
             webgeocoder.calculate_distance_from_reference_location('San Francisco, CA, USA')
             # find the coordinates for centre of San Francisco
             # for each row in dataframe, use lat/lng to calculate distance from SF centre
@@ -164,21 +164,16 @@ def graph():
     return render_template('graph.html', error_html=error_html, script1=script1,
                            div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript,
                            inline_disability_flag_property=inline_disability_flag_property)
-    # return render_template('graph.html', error_html=error_html, script1=script1,
-    #                        div1=div1, cdn_css=cdn_css, cdn_javascript=cdn_javascript,
-    #                        webgeocoder_dict=webgeocoder_dict)
 
 @app.route('/', methods=['GET'])
 def index():
     import pandas
 
     # avoid (visibly) persisting data if user has just landed on home/root/index page
-    # print('request.referrer: ' + str(request.referrer))
     if isinstance(request.referrer, str):
         referrer_last_part = request.referrer.split('/')[-1]
     else:
         referrer_last_part = str(None)
-    # print('last part: ' + referrer_last_part)
 
     if referrer_last_part == 'atlas' or referrer_last_part == 'graph':
         # inline_visibility_flag_tag = 'class="currently-visible"'
@@ -219,7 +214,6 @@ def index_success_table():
     except Exception as exception:
         print(exception)
         return render_template('index.html', result_html=str(exception))
-    # webgeocoder.upload(upload_file)
     try:
         webgeocoder.upload_csv(upload_file)
     except Exception as exception:
@@ -233,7 +227,6 @@ def index_success_table():
     try:
         result_html = webgeocoder.get_html_from_dataframe()
         print(result_html)
-        # return render_template('index.html', result_html=result_html, btn='download.html', file_name=webgeocoder.get_uploaded_filename())
         inline_visibility_flag_property = 'class="currently-visible"'
         inline_disability_flag_property = 'style="pointer-events:auto;color: #444;font-style:normal;opacity:1;"'
         return render_template('index.html', result_html=result_html, btn='download.html',
@@ -260,8 +253,3 @@ if __name__ == '__main__':
      then __main__ would not be the instance name '''
 
 
-# @SocketIO.on('disconnect')
-# def disconnect_user():
-#     webgeocoder.dataframe = None
-#     print('DISCONNECTED')
-    # try to avoid uploaded file data persisting over sessions
