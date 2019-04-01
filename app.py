@@ -95,6 +95,7 @@ def graph():
     from bokeh.models import ColumnDataSource, LabelSet
 
     # I have not written the code in an MVC way here - mostly Model code below
+    # this could do with being in a function(s) of its own
 
     error_html = ''
 
@@ -168,6 +169,8 @@ def graph():
 @app.route('/', methods=['GET'])
 def index():
     import pandas
+
+    # TODO could refector some of this into a function for use in both '/' GET and POST
 
     # avoid (visibly) persisting data if user has just landed on home/root/index page
     if isinstance(request.referrer, str):

@@ -16,6 +16,8 @@ class WebGeocoder():
         pass
 
     def calculate_distance_from_reference_location(self, address):
+        """ take a location/address (e.g. 'San Farncisco') and add/populate a dataframe column """
+        """ with km distances from that location """
         try:
             print('in calculate_distance_from_reference_location')
             self.set_reference_address(address)
@@ -38,6 +40,7 @@ class WebGeocoder():
             print(exception)
 
     def geocode_dataframe(self):
+        """ Use address column of dataframe to try to add columns with Lat/Lng """
         if not isinstance(self.dataframe, pandas.DataFrame):                # https://stackoverflow.com/a/14809149
             raise Exception('Dataframe not yet initialised: import CSV to proceed')
         if 'address' not in self.dataframe.columns and 'Address' not in self.dataframe.columns:
@@ -58,6 +61,7 @@ class WebGeocoder():
         # set to initial - really should restore to whatever was previous case (TODO)
 
     def download_csv_from_dataframe(self):
+        """ obtain CSV file from dataframe's data """
         try:
             return self.dataframe.to_csv(index=False)
         except Exception as exception:
@@ -65,10 +69,12 @@ class WebGeocoder():
             return exception
 
     def get_dataframe(self):
+        """ get this WebGeocoder instance's dataframe """
         return self.dataframe
 
 
     def get_html_from_dataframe(self):
+        """ get an HTML representation of this WebGeocoder instance's dataframe """
         try:
             return self.dataframe.to_html(classes='geocoded')
         except Exception as exception:
@@ -76,19 +82,23 @@ class WebGeocoder():
             return exception
 
     def get_reference_address(self):
+        """ get the address currently used as reference address by the WebGeocoder instance """
         return self.reference_address
 
     def get_reference_address_location(self):
+        """ get Lat/Lng coordinates for the address currently used as reference address by the WebGeocoder instance """
         from geopy.geocoders import Nominatim as nom        # https://geopy.readthedocs.io/en/stable/
         geolocator = nom(user_agent='pnj-python-web-geocoder')
         address, (latitude, longitude) = geolocator.geocode(self.get_reference_address())
         return (latitude, longitude)                     # return just the lat & lng, in a tuple
-
         # i.e. coordinates
+
     def get_uploaded_file(self):
+        """ get the file which has been uploaded by user """
         return self.uploaded_file
 
     def get_uploaded_filename(self):
+        """ get the name of the file which has been uploaded by user """
         try:
             print('Name of file uploaded: ' + self.uploaded_file.filename)
             return self.uploaded_file.filename
@@ -97,14 +107,17 @@ class WebGeocoder():
         return
 
     def process_csv_to_dataframe(self, file):
+        """ populate the WebGeocoder's dataframe using CSV file """
         self.dataframe = pandas.read_csv(file)
         print(self.dataframe)
         return
 
     def set_reference_address(self, address):
+        """ set the address currently to be used as reference address by the WebGeocoder instance """
         self.reference_address = address
 
     def upload_csv(self, file):
+        """ assign a CSV file to the dataframe of this WebGeocoder instance """
         try:
             print('Name of file uploaded: ' + file.filename)
         except AttributeError:
