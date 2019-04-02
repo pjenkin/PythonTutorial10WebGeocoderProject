@@ -61,6 +61,7 @@ div.download-button {
     height: 600px;
     width: 800px;
     background-color: transparent;
+    text-align: center;
 }
 
 .headercontainer {
