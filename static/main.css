@@ -39,9 +39,16 @@ div.download-button {
     margin-top: 30px;
 }
 
+.dataframecontainer {
+    position: relative;
+}
+
 .geocoded {
     text-align: center;
     margin-top: 50px;
+    position: relative;                     /* to centre in containing element */
+    left: 50%;                              /* to centre in containing element */
+    transform: translate(-50%,0%);          /* to centre in containing element */
 }
 
 .file_name {
